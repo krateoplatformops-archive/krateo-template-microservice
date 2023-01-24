@@ -1,0 +1,68 @@
+# {{=<% %>=}}
+---
+apiVersion: deployment.krateo.io/v1alpha1
+kind: FireworksApp
+metadata:
+  name: <%#norm%>{{name}}<%/norm%>-fireworksapp
+spec:
+  owner: mauro
+  title: <% name %>
+  description: Fireworks App Deployment
+  icon: "fa-solid fa-fire"
+  tags:
+    - fireworks
+    - template
+    - krateo
+    - katy perry
+  links:
+    - url: https://github.com/<% organizationName %>/<% repositoryName %>
+      title: <% organizationName %>/<% repositoryName %>
+      icon: "fa-brands fa-git"
+  plugins:
+    - name: resources
+      value: <%#norm%>{{name}}<%/norm%>-fireworksapp
+      type: argocd
+      icon: fa-solid fa-diagram-project
+      endpointName: argocd
+    - name: documentation
+      values:
+        - "[<% organizationName %>][<% owner %>-fire-<%#norm%>{{name}}<%/norm%>]README.md"
+      type: doc
+      icon: fa-solid fa-book
+      endpointName: github
+    - name: kubernetes
+      value: deploymentId
+      type: kubernetes
+      icon: fa-brands fa-docker
+    - name: pipelines
+      values:
+        - "[<% organizationName %>][<% owner %>-fire-<%#norm%>{{name}}<%/norm%>]Build Docker image for every commit"
+      type: pipeline
+      icon: fa-solid fa-person-running
+      endpointName: github
+  values:
+    replicas: <% replicas %>
+    organizationName: <% organizationName %>
+    repositoryName: <% owner %>-fire-<%#norm%>{{name}}<%/norm%>
+    destinationApiUrl: <% destinationEndpoint.target %>
+    host: <% host %>
+    description: Cause baby, you're a firework. Come on, show 'em what you're worth
+    endpointName: <% destinationEndpoint.friendlyName %>
+    namespace: krateo-system
+    fromRepo:
+      schema: https
+      organizationName: krateoplatformops
+      repositoryName: krateo-template-fireworksapp
+    toRepo:
+      schema: https
+      organizationName: <% organizationName %>
+      repositoryName: <% owner %>-fire-<%#norm%>{{name}}<%/norm%>
+      apiUrl: https://api.github.com
+  # for editing purposes
+  templateName: krateo-fireworks
+  flat:
+    name: <% name %>
+    replicas: <% replicas %>
+    host: <% host %>
+    organizationName: <% organizationName %>
+    destinationEndpoint: <% destinationEndpoint.friendlyName %>

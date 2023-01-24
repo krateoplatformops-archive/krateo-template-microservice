@@ -1,0 +1,112 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: fireworksapp.deployment.krateo.io
+spec:
+  group: deployment.krateo.io
+  names:
+    kind: FireworksApp
+    plural: fireworksapp
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              properties:
+                owner:
+                  type: string
+                title:
+                  type: string
+                description:
+                  type: string
+                icon:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+                links:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                      title:
+                        type: string
+                      icon:
+                        type: string
+                plugins:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      values:
+                        type: array
+                        items:
+                          type: string
+                      type:
+                        type: string
+                      icon:
+                        type: string
+                      endpointName:
+                        type: string
+                values:
+                  type: object
+                  description: FireworksApp deployment values
+                  properties:
+                    namespace:
+                      type: string
+                    replicas:
+                      type: integer
+                    host:
+                      type: string
+                    endpointName:
+                      type: string
+                    organizationName:
+                      type: string
+                    repositoryName:
+                      type: string
+                    fromRepo:
+                      type: object
+                      properties:
+                        schema:
+                          type: string
+                        organizationName:
+                          type: string
+                        repositoryName:
+                          type: string
+                    toRepo:
+                      type: object
+                      properties:
+                        schema:
+                          type: string
+                        organizationName:
+                          type: string
+                        repositoryName:
+                          type: string
+                templateName:
+                  type: string
+                  description: Name of the template to use for this deployment
+                flat:
+                  type: object
+                  description: FireworksApp deployment flat values
+                  properties:
+                    name:
+                      type: string
+                    replicas:
+                      type: integer
+                    host:
+                      type: string
+                    organizationName:
+                      type: string
+                    destinationEndpoint:
+                      type: string

@@ -1,0 +1,295 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: fireworksapp.deployment.krateo.io
+spec:
+  compositeTypeRef:
+    apiVersion: deployment.krateo.io/v1alpha1
+    kind: FireworksApp
+  resources:
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: InjectedIdentity
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "metadata.labels[deploymentId]"
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-pc-in"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                namespace: krateo-system
+              spec:
+                project: default
+                source:
+                  targetRevision: HEAD
+                  path: chart
+                destination:
+                  server: https://kubernetes.default.svc
+                  namespace: krateo-system
+                syncPolicy:
+                  automated:
+                    prune: true
+                    selfHeal: true
+                  syncOptions: # Sync options which modifies sync behavior
+                    - CreateNamespace=true # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "metadata.labels[deploymentId]"
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.forProvider.manifest.metadata.labels[deploymentId]"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-argocd-app-object"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "spec.forProvider.manifest.metadata.name"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-pc-in"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.values.toRepo.organizationName"
+              - fromFieldPath: "spec.values.toRepo.repositoryName"
+            strategy: string
+            string:
+              fmt: "https://github.com/%s/%s"
+          toFieldPath: "spec.forProvider.manifest.spec.source.repoURL"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.forProvider.manifest.metadata.namespace"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.forProvider.manifest.spec.destination.namespace"
+    - base:
+        apiVersion: git.krateo.io/v1alpha1
+        kind: ProviderConfig
+        spec:
+          deploymentServiceUrl: http://deployment-service.krateo-system.svc
+          fromRepoCredentials:
+            authMethod: basic
+            source: Secret
+            secretRef:
+              namespace: krateo-system
+              key: token
+          toRepoCredentials:
+            authMethod: basic
+            source: Secret
+            secretRef:
+              namespace: krateo-system
+              key: token
+      patches:
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-git-pc"
+        - fromFieldPath: "spec.values.endpointName"
+          toFieldPath: "spec.fromRepoCredentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-endpoint"
+        - fromFieldPath: "spec.values.endpointName"
+          toFieldPath: "spec.toRepoCredentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-endpoint"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.deploymentServiceUrl"
+          transforms:
+            - type: string
+              string:
+                fmt: "http://deployment-service.%s.svc"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.fromRepoCredentials.secretRef.namespace"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.toRepoCredentials.secretRef.namespace"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: Object
+        spec:
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: ConfigMap
+              metadata:
+                namespace: krateo-system
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "metadata.labels[deploymentId]"
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.forProvider.manifest.metadata.labels[deploymentId]"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-fireworksapp-values"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-pc-in"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.values.replicas"
+              # - fromFieldPath: "spec.values.organizationName"
+              # - fromFieldPath: "spec.values.repositoryName"
+              - fromFieldPath: "spec.values.host"
+              # - fromFieldPath: "spec.values.description"
+              # - fromFieldPath: "spec.values.endpointName"
+              # - fromFieldPath: "spec.values.namespace"
+              # - fromFieldPath: "spec.values.fromRepo.schema"
+              # - fromFieldPath: "spec.values.fromRepo.organizationName"
+              # - fromFieldPath: "spec.values.fromRepo.repositoryName"
+              - fromFieldPath: "spec.values.toRepo.organizationName"
+              - fromFieldPath: "spec.values.toRepo.repositoryName"
+              - fromFieldPath: "spec.values.toRepo.schema"
+              - fromFieldPath: "spec.values.endpointName"
+            strategy: string
+            string:
+              fmt: '{ "replicas": %d,
+                "host": "%s",
+                "organizationName": "%s",
+                "repositoryName": "%s",
+                "schema": "%s",
+                "apiUrl": "https://api.github.com",
+                "endpointName": "%s"
+                }'
+          toFieldPath: "spec.forProvider.manifest.data.values"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.forProvider.manifest.metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-fireworksapp-cm"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.manifest.metadata.namespace
+    - base:
+        apiVersion: git.krateo.io/v1alpha1
+        kind: Repo
+        spec:
+          deletionPolicy: Orphan
+          forProvider:
+            fromRepo:
+              path: skeleton
+            configMapKeyRef:
+              namespace: krateo-system
+              key: values
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "metadata.labels[deploymentId]"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.values.fromRepo.organizationName"
+              - fromFieldPath: "spec.values.fromRepo.repositoryName"
+            strategy: string
+            string:
+              fmt: "https://github.com/%s/%s"
+          toFieldPath: "spec.forProvider.fromRepo.url"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: "spec.values.toRepo.organizationName"
+              - fromFieldPath: "spec.values.toRepo.repositoryName"
+            strategy: string
+            string:
+              fmt: "https://github.com/%s/%s"
+          toFieldPath: "spec.forProvider.toRepo.url"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-git-pc"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.forProvider.configMapKeyRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-fireworksapp-cm"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.forProvider.configMapKeyRef.namespace"
+    - base:
+        apiVersion: github.krateo.io/v1alpha1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: krateo-system
+              key: token
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "metadata.labels[deploymentId]"
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.forProvider.deploymentId"
+        - fromFieldPath: "metadata.name"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-github-pc"
+        - fromFieldPath: "spec.values.endpointName"
+          toFieldPath: "spec.credentials.secretRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-endpoint"
+        - fromFieldPath: "spec.values.toRepo.apiUrl"
+          toFieldPath: "spec.apiUrl"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.credentials.secretRef.namespace"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: github.krateo.io/v1alpha1
+        kind: Repo
+        spec:
+          forProvider:
+            initialize: true
+            fromRepo:
+              path: skeleton
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "metadata.labels[deploymentId]"
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.forProvider.deploymentId"
+        - fromFieldPath: "spec.values.toRepo.organizationName"
+          toFieldPath: "spec.forProvider.org"
+        - fromFieldPath: "spec.values.toRepo.repositoryName"
+          toFieldPath: "spec.forProvider.name"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-github-pc"

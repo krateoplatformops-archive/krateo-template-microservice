@@ -1,0 +1,63 @@
+apiVersion: krateo.io/v1alpha1
+kind: Template
+metadata:
+  name: krateo-fireworks
+spec:
+  owner: mauro.sala@kiratech.it
+  title: Krateo Fireworks
+  description: Krateo Fireworks Template
+  icon: fa-solid fa-fire
+  tags:
+    - fireworks
+    - template
+    - krateo
+    - katy perry
+    - demo
+  widgets:
+    - title: Name and description
+      description: Name your app
+      properties:
+        - title: Name
+          key: name
+          description: Unique name of the component
+          required: true
+          default: firefire
+    - title: Kubernetes
+      properties:
+        - title: Replicas
+          key: replicas
+          description: Number of replicas
+          type: radio
+          required: true
+          default: "3"
+          options:
+            - title: "1"
+              value: "1"
+            - title: "2"
+              value: "2"
+            - title: "3"
+              value: "3"
+            - title: "4"
+              value: "4"
+            - title: "5"
+              value: "5"
+    - title: Expose application
+      description: Expose your application
+      properties:
+        - title: Host
+          key: host
+          description: Hostname of the application
+          required: true
+          default: fireworks-app.krateo.site
+    - title: Git repository destination
+      properties:
+        - title: Organization Name
+          key: organizationName
+          description: Organization name
+          required: true
+          default: krateoplatformops
+        - title: Endpoint
+          key: destinationEndpoint
+          description: github.com / gitlab.com / bitbucket.org
+          required: true
+          type: endpoint
