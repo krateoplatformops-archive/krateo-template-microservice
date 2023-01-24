@@ -2,3 +2,6 @@
 .DS_Store
 # AKS Kubeconfig
 kubeconfig-aks
+
+# Debug files
+template-service-deployment.yaml
