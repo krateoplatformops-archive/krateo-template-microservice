@@ -6,3 +6,4 @@ kubeconfig-aks
 # Debug files
 template-service-deployment.yaml
 temp.yaml
+kong-svc.yaml
