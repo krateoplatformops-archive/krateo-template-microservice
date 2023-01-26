@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: krateo-microservice
 spec:
-  owner: mauro.sala@kiratech.it
+  owner: simone.ragonesi@kiratech.it
   title: Krateo Microservice
   description: Krateo Microservice Template
   icon: fa-solid fa-fire
