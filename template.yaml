@@ -14,14 +14,6 @@ spec:
     - poc
     - demo
   widgets:
-    - title: Test widget
-      description: just a test (but mandatory!)
-      properties:
-        - title: Test
-          key: test
-          description: Unique name of the component
-          required: true
-          default: changeme
     - title: Name and description
       description: Name your app
       properties:

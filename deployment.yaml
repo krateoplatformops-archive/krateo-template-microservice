@@ -43,7 +43,7 @@ spec:
   values:
     replicas: <% replicas %>
     organizationName: <% organizationName %>
-    repositoryName: <% owner %>-fire-<%#norm%>{{name}}<%/norm%>
+    repositoryName: <%#norm%>{{name}}<%/norm%>
     destinationApiUrl: <% destinationEndpoint.target %>
     host: <% host %>
     description: Microservice PoC
@@ -56,7 +56,7 @@ spec:
     toRepo:
       schema: https
       organizationName: <% organizationName %>
-      repositoryName: <% owner %>-fire-<%#norm%>{{name}}<%/norm%>
+      repositoryName: <%#norm%>{{name}}<%/norm%>
       apiUrl: https://api.github.com
   # for editing purposes
   templateName: krateo-microservice
