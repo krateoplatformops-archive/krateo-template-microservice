@@ -8,3 +8,4 @@ template-service-deployment.yaml
 temp.yaml
 kong-svc.yaml
 microservice-ingress.yaml
+microservicepoc-crd.yaml
