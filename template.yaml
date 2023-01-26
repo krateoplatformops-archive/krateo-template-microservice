@@ -37,7 +37,7 @@ spec:
           description: Number of replicas
           type: radio
           required: true
-          default: "3"
+          default: "2"
           options:
             - title: "1"
               value: "1"
