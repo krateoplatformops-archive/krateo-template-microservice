@@ -21,7 +21,7 @@ spec:
           key: name
           description: Unique name of the component
           required: true
-          default: microservice
+          default: micro
     - title: Kubernetes
       properties:
         - title: Replicas
@@ -48,7 +48,7 @@ spec:
           key: host
           description: Hostname of the application
           required: true
-          default: microservice.krateoplatformops.io
+          default: micro.krateoplatformops.io
     - title: Git repository destination
       properties:
         - title: Organization Name
