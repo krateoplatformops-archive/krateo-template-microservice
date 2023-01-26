@@ -21,7 +21,7 @@ spec:
           key: name
           description: Unique name of the component
           required: true
-          default: firefire
+          default: microservice
     - title: Kubernetes
       properties:
         - title: Replicas
