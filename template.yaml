@@ -56,7 +56,7 @@ spec:
           key: host
           description: Hostname of the application
           required: true
-          default: app.krateo.io
+          default: app.krateoplatformops.io
     - title: Git repository destination
       properties:
         - title: Organization Name
