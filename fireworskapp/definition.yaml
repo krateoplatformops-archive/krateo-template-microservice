@@ -2,12 +2,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: fireworksapp.deployment.krateo.io
+  name: microservicepoc.deployment.krateo.io
 spec:
   group: deployment.krateo.io
   names:
-    kind: FireworksApp
-    plural: fireworksapp
+    kind: MicroservicePoc
+    plural: microservicepoc
   versions:
     - name: v1alpha1
       served: true
@@ -61,7 +61,7 @@ spec:
                         type: string
                 values:
                   type: object
-                  description: FireworksApp deployment values
+                  description: MicroservicePoc deployment values
                   properties:
                     namespace:
                       type: string
@@ -98,7 +98,7 @@ spec:
                   description: Name of the template to use for this deployment
                 flat:
                   type: object
-                  description: FireworksApp deployment flat values
+                  description: MicroservicePoc deployment flat values
                   properties:
                     name:
                       type: string

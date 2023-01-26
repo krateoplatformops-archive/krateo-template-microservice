@@ -1,17 +1,17 @@
 apiVersion: krateo.io/v1alpha1
 kind: Template
 metadata:
-  name: krateo-fireworks
+  name: krateo-microservice
 spec:
   owner: mauro.sala@kiratech.it
-  title: Krateo Fireworks
-  description: Krateo Fireworks Template
+  title: Krateo Microservice
+  description: Krateo Microservice Template
   icon: fa-solid fa-fire
   tags:
-    - fireworks
+    - microservice
     - template
     - krateo
-    - katy perry
+    - poc
     - demo
   widgets:
     - title: Test widget
@@ -56,7 +56,7 @@ spec:
           key: host
           description: Hostname of the application
           required: true
-          default: fireworks-app.krateo.site
+          default: app.krateo.io
     - title: Git repository destination
       properties:
         - title: Organization Name

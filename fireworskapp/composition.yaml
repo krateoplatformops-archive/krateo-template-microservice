@@ -2,11 +2,11 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: fireworksapp.deployment.krateo.io
+  name: microservicepoc.deployment.krateo.io
 spec:
   compositeTypeRef:
     apiVersion: deployment.krateo.io/v1alpha1
-    kind: FireworksApp
+    kind: MicroservicePoc
   resources:
     - base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
@@ -149,7 +149,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-fireworksapp-values"
+                fmt: "%s-microservicepoc-values"
         - fromFieldPath: metadata.name
           toFieldPath: spec.providerConfigRef.name
           transforms:
@@ -189,7 +189,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-fireworksapp-cm"
+                fmt: "%s-microservicepoc-cm"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.manifest.metadata.namespace
     - base:
@@ -235,7 +235,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-fireworksapp-cm"
+                fmt: "%s-microservicepoc-cm"
         - fromFieldPath: "spec.namespace"
           toFieldPath: "spec.forProvider.configMapKeyRef.namespace"
     - base:

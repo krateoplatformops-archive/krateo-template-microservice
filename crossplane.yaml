@@ -1,11 +1,11 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Configuration
 metadata:
-  name: krateo-deployment-fireworksapp
+  name: krateo-deployment-microservice
   annotations:
     meta.crossplane.io/maintainer: Diego Braga <diego.braga@kiratech.it>
     meta.crossplane.io/keywords: krateo, deployment, app
-    meta.crossplane.io/source: github.com/krateoplatformops/krateo-template-fireworksapp
+    meta.crossplane.io/source: github.com/krateoplatformops/krateo-template-microservice
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: |
       This reference platform Configuration for Kubernetes and Data Services

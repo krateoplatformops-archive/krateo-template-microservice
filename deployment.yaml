@@ -1,26 +1,26 @@
 # {{=<% %>=}}
 ---
 apiVersion: deployment.krateo.io/v1alpha1
-kind: FireworksApp
+kind: Microservice
 metadata:
-  name: <%#norm%>{{name}}<%/norm%>-fireworksapp
+  name: <%#norm%>{{name}}<%/norm%>-microservice
 spec:
   owner: mauro
   title: <% name %>
-  description: Fireworks App Deployment
+  description: Microservice Deployment
   icon: "fa-solid fa-fire"
   tags:
-    - fireworks
+    - microservice
     - template
     - krateo
-    - katy perry
+    - poc
   links:
     - url: https://github.com/<% organizationName %>/<% repositoryName %>
       title: <% organizationName %>/<% repositoryName %>
       icon: "fa-brands fa-git"
   plugins:
     - name: resources
-      value: <%#norm%>{{name}}<%/norm%>-fireworksapp
+      value: <%#norm%>{{name}}<%/norm%>-microservice
       type: argocd
       icon: fa-solid fa-diagram-project
       endpointName: argocd
@@ -46,20 +46,20 @@ spec:
     repositoryName: <% owner %>-fire-<%#norm%>{{name}}<%/norm%>
     destinationApiUrl: <% destinationEndpoint.target %>
     host: <% host %>
-    description: Cause baby, you're a firework. Come on, show 'em what you're worth
+    description: Microservice PoC
     endpointName: <% destinationEndpoint.friendlyName %>
     namespace: krateo-system
     fromRepo:
       schema: https
       organizationName: krateoplatformops
-      repositoryName: krateo-template-fireworksapp
+      repositoryName: krateo-template-microservice
     toRepo:
       schema: https
       organizationName: <% organizationName %>
       repositoryName: <% owner %>-fire-<%#norm%>{{name}}<%/norm%>
       apiUrl: https://api.github.com
   # for editing purposes
-  templateName: krateo-fireworks
+  templateName: krateo-microservice
   flat:
     name: <% name %>
     replicas: <% replicas %>
