@@ -10,7 +10,7 @@ This is a template used to deploy a *microservice* with `krateo`:
 </div>
 <br/>
 
-If you dont override the value in `template.yaml` file, the microservice default url is this: https://microsvc.krateoplatformops.io .
+If you dont override the `Expose application` widget values in `template.yaml` file, the microservice default url is this: https://microsvc.krateoplatformops.io .
 
 The microservice also implement a prometheus exporter: https://microsvc.krateoplatformops.io/metrics .
 
