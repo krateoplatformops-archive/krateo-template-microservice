@@ -1,11 +1,11 @@
 # {{=<% %>=}}
 ---
 apiVersion: deployment.krateo.io/v1alpha1
-kind: Microservice
+kind: MicroservicePoc
 metadata:
   name: <%#norm%>{{name}}<%/norm%>-microservice
 spec:
-  owner: mauro
+  owner: simone
   title: <% name %>
   description: Microservice Deployment
   icon: "fa-solid fa-fire"
