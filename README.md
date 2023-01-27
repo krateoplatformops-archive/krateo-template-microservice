@@ -10,13 +10,13 @@ This is a template used to deploy a *microservice* with `krateo`:
 </div>
 <br/>
 
-If you dont override the `Expose application` widget values in `template.yaml` file, the microservice default url is this: https://svctemplate.krateoplatformops.io .
+If you dont override the `Expose application` widget values in `template.yaml` file, the microservice default url is this: https://svctmp.krateoplatformops.io .
 
-The microservice also implement a prometheus exporter: https://svctemplate.krateoplatformops.io/metrics .
+The microservice also implement a prometheus exporter: https://svctmp.krateoplatformops.io/metrics .
 
 example:  
 ```console
-❯ curl https://svctemplate.krateoplatformops.io/metrics
+❯ curl https://svctmp.krateoplatformops.io/metrics
 
 # HELP python_gc_objects_collected_total Objects collected during gc
 # TYPE python_gc_objects_collected_total counter
