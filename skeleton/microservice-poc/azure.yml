@@ -1,0 +1,27 @@
+trigger: none
+
+# Create a unique name for the build based on your project requirements
+#   BuildID is the unique ID for the build
+name: $(BuildID)-$(DayOfMonth).$(Month).$(Year:yyyy)-$(SourceBranchName)
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+  - repository: global
+    type: git
+    name: Toolchain/Global pipeline
+    ref: refs/heads/main
+  - repository: <microservice-name>
+    type: git
+    name: <microservice-name>
+    trigger:
+    - main
+    - release/*
+    - develop
+
+extends:
+  template: azure.yml@global
+  parameters:
+    repoName: <microservice-name>
